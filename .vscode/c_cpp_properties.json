@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/processor/core/**",
+                "${workspaceFolder}/processor/addon/**",
+                "/usr/local/Cellar/opencv/4.1.1_1/include/opencv4",
+                "${HOME}/.cmake-js/node-x64/v12.16.3/include/node",
+                "${workspaceFolder}/processor/node_modules/node-addon-api"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks"
+            ],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}

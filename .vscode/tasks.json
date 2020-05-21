@@ -1,0 +1,83 @@
+// See https://go.microsoft.com/fwlink/?LinkId=733558
+// for the documentation about the tasks.json format
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"label": "build_extension",
+			"script": "watch",
+			"problemMatcher": "$tsc-watch",
+			"isBackground": true,
+			"presentation": {
+				"reveal": "silent"
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"path": "extension/"
+		},
+		{
+			"type": "shell",
+			"label": "build_processor",
+			"command": [
+				"cmake",
+				"--build ./build",
+				"-- -j 2"
+			],
+			"isBackground": false,
+			"presentation": {
+				"reveal": "always",
+				"clear": true
+			},
+			"group": "build",
+			"options": {
+				"cwd": "processor/",
+				"env": {}
+			},
+			"problemMatcher": [
+				"$gcc"
+			]
+		},
+		{
+			"type": "shell",
+			"label": "win32_processor",
+			"command": [
+				"Move-Item",
+				"-Path .\\build\\Debug\\FuwafuwaAddon.node",
+				"-Destination ..\\extension\\build\\FuwafuwaAddon.win32.node"
+			],
+			"isBackground": false,
+			"presentation": {
+				"reveal": "always",
+				"clear": true
+			},
+			"group": "none",
+			"problemMatcher": [
+				"$gcc"
+			]
+		},
+		{
+			"type": "shell",
+			"label": "darwin_processor",
+			"command": [
+				"mv",
+				"processor/build/Release/FuwafuwaAddon.node",
+				"extension/build/FuwafuwaAddon.darwin.node"
+			],
+			"isBackground": false,
+			"presentation": {
+				"reveal": "always",
+				"clear": true
+			},
+			"group": "none",
+			"problemMatcher": [
+				"$gcc"
+			],
+			"dependsOn": [
+				"build_processor"
+			]
+		}
+	]
+}
