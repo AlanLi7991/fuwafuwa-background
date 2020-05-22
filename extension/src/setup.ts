@@ -29,10 +29,10 @@ export default class Setup {
             this.insertJavaScript()
             //checksum
             Modifier.checksum()
+            vscode.window.showInformationMessage("ふわふわ安装完毕(重新加载后生效) Fuwafuwa installed, reload window to work")
         } catch (error) {
             vscode.window.showErrorMessage(`ふわふわ安装失败(Fuwafuwa install failed)`)
         }
-        vscode.window.showInformationMessage("ふわふわ安装完毕(重新加载后生效) Fuwafuwa installed, reload window to work")
     }
 
     public static uninstall() {
@@ -54,10 +54,10 @@ export default class Setup {
                 Modifier.repair()
                 Modifier.checksum()
             }
+            vscode.window.showInformationMessage("ふわふわ已卸载(重新加载后生效) Fuwafuwa uninstalled, reload window to refresh")
         } catch (error) {
             vscode.window.showErrorMessage(`ふわふわ卸载失败(Fuwafuwa uninstall failed)`)
         }
-        vscode.window.showInformationMessage("ふわふわ已卸载(重新加载后生效) Fuwafuwa uninstalled, reload window to refresh")
     }
 
     public static reinstall() {
@@ -77,10 +77,10 @@ export default class Setup {
             this.insertJavaScript()
             //checksum
             Modifier.checksum()
+            vscode.window.showInformationMessage("ふわふわ安装完毕(重新加载后生效) Fuwafuwa installed, reload window to work")
         } catch (error) {
             vscode.window.showErrorMessage(`ふわふわ安装失败(Fuwafuwa install failed)`)
         }
-        vscode.window.showInformationMessage("ふわふわ安装完毕(重新加载后生效) Fuwafuwa installed, reload window to work")
     }
 
     private static insertCSS() {
