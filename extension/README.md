@@ -4,12 +4,6 @@ This is an editor background extension can bring unlimited sisters company with 
 
 This work referred three other extensions:
 
-* [vscode-background](https://github.com/shalldie/vscode-background)
-* [vscode-background-cover](https://github.com/vscode-extension/vscode-background-cover)
-* [vscode-fix-checksums](https://github.com/lehni/vscode-fix-checksums)
-
-I am very appreciated those works build by pioneer
-
 这是一个可以让十万个不同小姐姐作为背景图出现在你代码编辑器中的插件。
 
 这项工作参考了以下几个库的源代码:
@@ -18,85 +12,75 @@ I am very appreciated those works build by pioneer
 * [vscode-background-cover](https://github.com/vscode-extension/vscode-background-cover)
 * [vscode-fix-checksums](https://github.com/lehni/vscode-fix-checksums)
 
+I am very appreciated those works build by pioneer
+
 我十分感谢这些先驱者的代码
 
 ## Features
 
-![](https://github.com/AlanLi7991/fuwafuwa-background/blob/master/extension/media/sample.gif?raw=true)
-
 This extension provides 4 mode of background
-
-1. Default Random: use five inner images as background and loop
-2. Default Stable: use fixed inner image as background
-3. Custom Random: use images from folder configuration and random loop
-4. Custom Stable: use fixed image from configuration as background
-
-Above is a illustration of "Default Random" mode
 
 本插件一共提供了四种模式
 
-1. 默认循环模式：使用内置的固定图片作为背景图并且循环展示
-2. 默认固定模式：使用内置的固定图片作为背景图
-3. 自定义随机模式：使用一个文件夹作为数据库，并随机选取图片作为背景图
-4. 自定义固定模式：使用一张固定的图片作为背景图
+| Mode    | Feature    | 特点 |
+| :------------ | :------------ | :------------ |
+| Default Random 默认循环模式 | use five inner images as background and loop | 使用内置的固定图片作为背景图并且循环展示 |
+| Default Stable 默认固定模式 | use fixed inner image as background | 使用内置的固定图片作为背景图 |
+| Custom Random 自定义随机模式 | use images from folder configuration and random loop | 使用一个文件夹作为数据库，并随机选取图片作为背景图 |
+| Custom Stable 自定义固定模式 | use fixed image from configuration as background | 使用一张固定的图片作为背景图 |
+
+![](https://github.com/AlanLi7991/fuwafuwa-background/blob/master/extension/media/sample.gif?raw=true)
+
+Above is a illustration of "Default Random" mode
 
 以上是 “默认循环模式” 的展示效果
 
+![](https://github.com/AlanLi7991/fuwafuwa-background/blob/master/extension/media/custom.gif?raw=true)
+
+Above is a illustration of "Custom Random" mode， result segments white background in automatic
+
+以上是 “自定义循环模式” 的展示效果，开启了自动分割白色背景
 
 ## Requirements
 
 **"Install" "Uninstall" "Reinstall" Commands in this extension maybe need administrator authority**
 
-"/tmp" can be any directory
-
-| Operator System    | How to install   |
-| :------------ | :------------ |
-| Windows   | run with the administrator authority |
-| MacOS     | cd /tmp && sudo code .    |
-| Linux     | cd /tmp && sudo code .    |
-
 **本插件的 “启用” “停用” “重装” 命令可能需要管理员权限，不同平台的情况如下**
 
-| Operator System    | How to install   |
-| :------------ | :------------ |
-| Windows   | 以管理员身份运行 |
-| MacOS     | cd /tmp && sudo code .    |
-| Linux     | cd /tmp && sudo code .    |
+"/tmp" can be any directory
 
 "/tmp" 可以是任意文件夹
+
+| Operator System    | How to install   | 如何获得权限   |
+| :------------ | :------------ | :------------ |
+| Windows   | run with the administrator authority | 以管理员身份运行 |
+| MacOS     | cd /tmp && sudo code .  | cd /tmp && sudo code .    |
+| Linux     | cd /tmp && sudo code .  | cd /tmp && sudo code .    |
 
 ## Extension Settings
 
 Settings need reinstall fuwafuwa
 
-* `fuwafuwa.interval`: control the random loop interval
-* `fuwafuwa.style`: control the background css style
-* `fuwafuwa.opacity`: control the background image css opacity
+需要 “重装” 指令的配置选项
 
+| Settings    |  Function   |  作用   |
+| :------------ | :------------ | :------------ |
+| fuwafuwa.interval | control the random loop interval | 控制随机循环的时间间隔 |
+| fuwafuwa.style    | control the background css style | 控制背景图片展示的CSS样式 |
+| fuwafuwa.opacity  | control the background image css opacity | 控制背景图片展示的CSS透明度 |
 
 Settings can change during using
 
-* `fuwafuwa.hidden`: hide the fuwafuwa background image
-* `fuwafuwa.segment`: switch the segment process of image
-* `fuwafuwa.random`: switch between stable mode and random mode
-* `fuwafuwa.image`: depict the custom stable background image
-* `fuwafuwa.folder`: depict the custom random background image data source
-* `fuwafuwa.cache`: depict the custom random background processed image location
-
-需要 “重装” 指令的配置选项
-
-* `fuwafuwa.interval`: 控制随机循环的时间间隔
-* `fuwafuwa.style`: 控制背景图片展示的CSS样式
-* `fuwafuwa.opacity`: 控制背景图片展示的CSS透明度
-
 可以在使用中修改的配置选项
 
-* `fuwafuwa.hidden`: 隐藏背景图片的显示
-* `fuwafuwa.segment`: 开启或关闭自动切割白色背景功能
-* `fuwafuwa.random`: 切换随机模式或固定模式
-* `fuwafuwa.image`: 设定自定义固定模式的背景图
-* `fuwafuwa.folder`: 设定自定义随机模式的图片文件夹
-* `fuwafuwa.cache`: 设定自定义随机模式的缓存文件夹，用于储存图片处理结果
+| Settings    |  Function   |  作用   |
+| :------------ | :------------ | :------------ |
+| fuwafuwa.hidden   | hide the fuwafuwa background image          | 隐藏背景图片的显示 |
+| fuwafuwa.segment  | switch the segment process of image         | 开启或关闭自动切割白色背景功能 |
+| fuwafuwa.random   | switch between stable mode and random mode  | 切换随机模式或固定模式    |
+| fuwafuwa.image    | depict the custom stable background image   | 设定自定义固定模式的背景图 |
+| fuwafuwa.folder   | depict the custom random background image data source | 设定自定义随机模式的图片文件夹 |
+| fuwafuwa.cache    | depict the custom random background processed image location | 设定自定义随机模式的缓存文件夹，用于储存图片处理结果 |
 
 ## Discussion
 

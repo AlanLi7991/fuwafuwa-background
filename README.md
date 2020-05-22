@@ -4,12 +4,6 @@ This is an editor background extension can bring unlimited sisters company with 
 
 This work referred three other extensions:
 
-* [vscode-background](https://github.com/shalldie/vscode-background)
-* [vscode-background-cover](https://github.com/vscode-extension/vscode-background-cover)
-* [vscode-fix-checksums](https://github.com/lehni/vscode-fix-checksums)
-
-I am very appreciated those works build by pioneer
-
 这是一个可以让十万个不同小姐姐作为背景图出现在你代码编辑器中的插件。
 
 这项工作参考了以下几个库的源代码:
@@ -18,47 +12,47 @@ I am very appreciated those works build by pioneer
 * [vscode-background-cover](https://github.com/vscode-extension/vscode-background-cover)
 * [vscode-fix-checksums](https://github.com/lehni/vscode-fix-checksums)
 
+I am very appreciated those works build by pioneer
+
 我十分感谢这些先驱者的代码
 
 ## Features
 
-![](https://github.com/AlanLi7991/fuwafuwa-background/blob/master/extension/media/sample.gif?raw=true)
-
 This extension provides 4 mode of background
-
-1. Default Random: use five inner images as background and loop
-2. Default Stable: use fixed inner image as background
-3. Custom Random: use images from folder configuration and random loop
-4. Custom Stable: use fixed image from configuration as background
-
-Above is a illustration of "Default Random" mode
 
 本插件一共提供了四种模式
 
-1. 默认循环模式：使用内置的固定图片作为背景图并且循环展示
-2. 默认固定模式：使用内置的固定图片作为背景图
-3. 自定义随机模式：使用一个文件夹作为数据库，并随机选取图片作为背景图
-4. 自定义固定模式：使用一张固定的图片作为背景图
+| Mode    | Feature    | 特点 |
+| :------------ | :------------ | :------------ |
+| Default Random 默认循环模式 | use five inner images as background and loop | 使用内置的固定图片作为背景图并且循环展示 |
+| Default Stable 默认固定模式 | use fixed inner image as background | 使用内置的固定图片作为背景图 |
+| Custom Random 自定义随机模式 | use images from folder configuration and random loop | 使用一个文件夹作为数据库，并随机选取图片作为背景图 |
+| Custom Stable 自定义固定模式 | use fixed image from configuration as background | 使用一张固定的图片作为背景图 |
+
+![](https://github.com/AlanLi7991/fuwafuwa-background/blob/master/extension/media/sample.gif?raw=true)
+
+Above is a illustration of "Default Random" mode
 
 以上是 “默认循环模式” 的展示效果
 
+![](https://github.com/AlanLi7991/fuwafuwa-background/blob/master/extension/media/custom.gif?raw=true)
+
+Above is a illustration of "Custom Random" mode， result segments white background in automatic
+
+以上是 “自定义循环模式” 的展示效果，开启了自动分割白色背景
+
 ## Directory
 
-Description of sub directory
-
-| Directory    | Module   |
-| :------------ | :------------ |
-| extension     | VSCode Extension Root      |
-| playground    | Playground for opencv operator |
-| processor     | Implement OpenCV with C++ & Build as node-addon |
+Description of sub directory 
 
 子文件夹的说明
 
-| Directory    | Module   |
+| Directory    | Module   | 模块   |
 | :------------ | :------------ |
-| extension     | VSCode 插件根目录      |
-| playground    | OpenCV操作的测试代码 |
-| processor     | OpenCV的C++实现，并且给VSCode提供node-addon|
+| extension     | VSCode Extension Root | VSCode 插件根目录 |
+| playground    | Playground for opencv operator | OpenCV操作的测试代码 |
+| processor     | Implement OpenCV with C++ & Build as node-addon | OpenCV的C++实现，并且给VSCode提供node-addon|
+
 
 ## Discussion
 
