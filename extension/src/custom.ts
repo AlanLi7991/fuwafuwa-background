@@ -122,6 +122,16 @@ export class CustomRandom extends Manager {
         this.skip_once = false
     }
 
+    public static readyCheck() {
+        const folder = vscode.workspace.getConfiguration('fuwafuwa').folder as string
+        const cache = vscode.workspace.getConfiguration('fuwafuwa').cache as string
+        const onlyFolder = folder.length == 0 && cache.length > 0
+        const onlyCache = folder.length > 0 && cache.length == 0
+        if (onlyFolder || onlyCache) {
+            vscode.window.showWarningMessage(`自定义随机模式需要同时配置目录和缓存文件夹(CustomRandom mode need both folder and cache settings)`)
+        }
+    }
+
 }
 
 export class CustomStable extends Manager {

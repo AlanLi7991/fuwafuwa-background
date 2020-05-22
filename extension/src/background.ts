@@ -20,6 +20,17 @@ export default class Background {
                 vscode.window.showInformationMessage("ふわふわ重装后生效 Fuwafuwa need reinstall to activate")
                 return
             }
+            const random = event.affectsConfiguration("fuwafuwa.random")
+            if (random) {
+                Manager.clean()
+            }
+
+            const folder = event.affectsConfiguration("fuwafuwa.folder")
+            const cache = event.affectsConfiguration("fuwafuwa.cache")
+            if (folder || cache) {
+                CustomRandom.readyCheck()
+            }
+
             background.reload()
         });
     }
@@ -31,9 +42,6 @@ export default class Background {
     private reload() {
         //stop
         this.stop()
-
-        //clean
-        Manager.clean()
 
         // check hidden
         const hidden = vscode.workspace.getConfiguration('fuwafuwa').hidden ?? true
@@ -67,7 +75,8 @@ export default class Background {
 
         //load data
         try {
-            this.manager.load()
+            this.manager?.load()
+            this.manager?.shift()
         } catch (error) {
             vscode.window.showWarningMessage(`加载数据出错，请检查配置(Load image error, check configurations)`)
         }
