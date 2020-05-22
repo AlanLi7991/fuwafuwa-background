@@ -117,7 +117,7 @@ export default class Setup {
 
     private static insertJavaScript() {
         //location
-        const location = Finding.scriptPath
+        const location = Finding.scriptFile
 
         //query style configuration
         const config = vscode.workspace.getConfiguration('fuwafuwa')

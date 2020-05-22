@@ -14,7 +14,7 @@ export default class Finding {
         return path.join(this.root, "vs", "workbench", name)
     }
 
-    public static get scriptPath(): string {
+    public static get scriptFile(): string {
         return path.join(this.root, "vs", "code", "electron-browser", "workbench", "workbench.js")
     }
 

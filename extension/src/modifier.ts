@@ -15,7 +15,7 @@ export default class Modifier {
 
         //paths
         const css = Finding.cssFile
-        const script = Finding.scriptPath
+        const script = Finding.scriptFile
         const product = Finding.productFile
 
         const back_css = path.join(Finding.backupDirectory, path.basename(css))
@@ -39,7 +39,7 @@ export default class Modifier {
     public static restore(): boolean {
         //paths
         const css = Finding.cssFile
-        const script = Finding.scriptPath
+        const script = Finding.scriptFile
         const product = Finding.productFile
 
         const back_css = path.join(Finding.backupDirectory, path.basename(css))
@@ -66,12 +66,16 @@ export default class Modifier {
     }
 
     public static repair() {
-        [Finding.cssFile, Finding.scriptPath].forEach(location => {
-            let content = fs.readFileSync(location, Finding.encode)
-            content = content.replace(/\/\/start-fuwafuwa-start[\s\S]*?\/\/end-fuwafuwa-end/g, "")
-            content = content.replace(/\s*$/, "")
-            fs.writeFileSync(location, content, Finding.encode)
-        })
+        let content = fs.readFileSync(Finding.scriptFile, Finding.encode)
+        content = content.replace(/\/\/start-fuwafuwa-start[\s\S]*?\/\/end-fuwafuwa-end/g, "")
+        content = content.replace(/\s*$/, "\n")
+
+        fs.writeFileSync(Finding.scriptFile, content, Finding.encode)
+
+        content = fs.readFileSync(Finding.cssFile, Finding.encode)
+        content = content.replace(/\/\*start-fuwafuwa-start\*\/[\s\S]*?\/\*end-fuwafuwa-end\*\//g, "")
+        content = content.replace(/\s*$/, "")
+        fs.writeFileSync(Finding.cssFile, content, Finding.encode)
     }
 
     public static checksum() {
@@ -111,14 +115,16 @@ export default class Modifier {
     }
 
     public static modified(): boolean {
-        const content = fs.readFileSync(Finding.cssFile, Finding.encode)
-        const match = content.match(/\/\*start-fuwafuwa-start\*\/[\s\S]*?\/\*end-fuwafuwa-end\*\//g)
-        return match != null
+        const css_content = fs.readFileSync(Finding.cssFile, Finding.encode)
+        const css_match = css_content.match(/\/\*start-fuwafuwa-start\*\/[\s\S]*?\/\*end-fuwafuwa-end\*\//g)
+        const js_content = fs.readFileSync(Finding.scriptFile, Finding.encode)
+        const js_match = js_content.match(/\/\/start-fuwafuwa-start[\s\S]*?\/\/end-fuwafuwa-end/g)
+        return css_match != null || js_match != null
     }
 
     public static openDevTools() {
         //location
-        const location = Finding.scriptPath
+        const location = Finding.scriptFile
         const content = fs.readFileSync(location, Finding.encode) + `
 //start-fuwafuwa-start
 var btn = document.createElement("BUTTON");
