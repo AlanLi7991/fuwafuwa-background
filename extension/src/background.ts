@@ -4,6 +4,7 @@ import Manager from "./manager"
 import { InnerRandom, InnerStable } from "./inner"
 import { CustomRandom, CustomStable } from "./custom"
 import Image from "./image"
+import Finding from "./finding"
 
 export default class Background {
 
@@ -75,6 +76,9 @@ export default class Background {
 
         //load data
         try {
+            if (!fs.existsSync(Finding.activeDirectory)) {
+                fs.mkdirSync(Finding.activeDirectory, { recursive: true })
+            }
             this.manager?.load()
             this.manager?.shift()
         } catch (error) {

@@ -12,9 +12,6 @@ export default class Modifier {
         if (!fs.existsSync(Finding.backupDirectory)) {
             fs.mkdirSync(Finding.backupDirectory, { recursive: true })
         }
-        if (!fs.existsSync(Finding.activeDirectory)) {
-            fs.mkdirSync(Finding.activeDirectory, { recursive: true })
-        }
         
         //paths
         const css = Finding.cssFile

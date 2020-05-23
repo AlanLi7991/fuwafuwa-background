@@ -41,6 +41,10 @@ Above is a illustration of "Custom Random" mode， result segments white backgro
 
 以上是 “自定义循环模式” 的展示效果，开启了自动分割白色背景
 
+Resource for test can be obtained from git repository "resource/folder"
+
+测试用的素材可以通过 Git Repository 的 "resource/folder" 路径获取
+
 ## Requirements
 
 **"Install" "Uninstall" "Reinstall" Commands in this extension maybe need administrator authority**
@@ -92,9 +96,22 @@ If anyone has good a idea to improve the result of segment sisters from differen
 
 如果哪位图像领域的工程师，愿意指教我其他方案来提高复杂背景的分割效果，请通过Github的issue和我联系，我十分愿意在插件中实现它。
 
+## Copy Right
+
+All images are collected form internet， if you own the copy right. please contact me to remove it as soon as possible.
+
+所有的图片均从互联网上收集，如果您拥有其版权，请尽快联系我删除。
+
 ## Release Notes
 
 ### 1.0.0
 
 Initial release of alpha version
 
+### 1.0.1
+
+Update clean logic
+
+### 1.0.2
+
+Fix warning information logic at first install

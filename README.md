@@ -48,10 +48,11 @@ Description of sub directory
 子文件夹的说明
 
 | Directory    | Module   | 模块   |
-| :------------ | :------------ |
+| :------------ | :------------ | :------------ |
 | extension     | VSCode Extension Root | VSCode 插件根目录 |
 | playground    | Playground for opencv operator | OpenCV操作的测试代码 |
 | processor     | Implement OpenCV with C++ & Build as node-addon | OpenCV的C++实现，并且给VSCode提供node-addon|
+| resource      | Resources for test CustomRandom mode | 测试自定义循环模式的资源 |
 
 
 ## Discussion
