@@ -82,7 +82,7 @@ export default class Background {
             this.manager?.load()
             this.manager?.shift()
         } catch (error) {
-            vscode.window.showWarningMessage(`加载数据出错，请检查配置(Load image error, check configurations)`)
+            vscode.window.showWarningMessage(`${error.message}`)
         }
 
         //init interval
@@ -90,7 +90,7 @@ export default class Background {
             try {
                 this.manager?.shift()
             } catch (error) {
-                vscode.window.showWarningMessage(`切换背景图出错，请检查配置(Image shift error, check configurations)`)
+                vscode.window.showWarningMessage(`${error.message}`)
             }
         }, (vscode.workspace.getConfiguration('fuwafuwa').interval ?? 10) * 900)
     }

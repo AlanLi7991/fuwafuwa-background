@@ -2,7 +2,7 @@
 	"name": "fuwafuwa-background",
 	"displayName": "ふわふわ(Fuwafuwa) Background",
 	"description": "fuwafuwa-background is an editor background extension with image process. Fuwafuwa can segment font object with white background",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"publisher": "AlanLi7991",
 	"author": "AlanLi7991",
 	"repository": {
@@ -71,7 +71,7 @@
 						"left": "auto",
 						"width": "100%",
 						"height": "100%",
-						"custom": "background-position: center center;"
+						"custom": "background-position: center center; transition: background-image 1s ease-in-out;"
 					},
 					"properties": {
 						"position": {

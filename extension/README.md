@@ -16,6 +16,22 @@ I am very appreciated those works build by pioneer
 
 我十分感谢这些先驱者的代码
 
+## Problems
+
+> I will resolve soon 会马上解决
+
+**"Custom Random Mode" need OpenCV dynamic lib in system right now**
+
+**目前“自定义随机模式”需要系统中存在OpenCV动态库**
+
+## Will Do
+
+1. Build extension processor with static OpenCV library
+2. Update segment algorithm robust by some paper
+
+1. 使用静态库的OpenCV重新编译插件
+2. 查找一些论文来升级分割算法效果
+
 ## Features
 
 This extension provides 4 mode of background
@@ -115,3 +131,7 @@ Update clean logic
 ### 1.0.2
 
 Fix warning information logic at first install
+
+## 1.0.3
+
+Add image shift animation & error message detail
