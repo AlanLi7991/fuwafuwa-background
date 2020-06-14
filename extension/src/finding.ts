@@ -22,7 +22,7 @@ export default class Finding {
     }
 
     public static get libraryFile(): string {
-        return path.join(this.extension, "media", "active", "FuwafuwaAddon.node")
+        return path.join(this.extension, "media", "FuwafuwaAddon.node")
     }
 
     public static get backupDirectory(): string {

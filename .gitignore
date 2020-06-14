@@ -2,6 +2,7 @@ out
 node_modules
 .vscode-test/
 *.vsix
+extension/media/FuwafuwaAddon.node
 extension/media/active
 processor/build
 processor/opencv
