@@ -138,9 +138,14 @@ export class CustomStable extends Manager {
 
     load(): void {
         const background = vscode.workspace.getConfiguration('fuwafuwa').image
-        for (let i = 0; i < Finding.capacity; i++) {
-            fs.copyFileSync(background, Finding.activeImage(i))
-        }
+        const image = new Image(background, false)
+        image.generateCache().then((success) => {
+            for (let i = 0; i < Finding.capacity; i++) {
+                const source = success ? image.cacheImage : background
+                fs.copyFileSync(source, Finding.activeImage(i))
+            }
+        })
+
     }
 
 }

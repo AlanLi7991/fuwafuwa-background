@@ -2,6 +2,7 @@ import * as fs from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 import * as crypto from "crypto"
+import * as URL from "url"
 import Finding from "./finding"
 
 
@@ -76,6 +77,66 @@ export default class Modifier {
         content = content.replace(/\/\*start-fuwafuwa-start\*\/[\s\S]*?\/\*end-fuwafuwa-end\*\//g, "")
         content = content.replace(/\s*$/, "")
         fs.writeFileSync(Finding.cssFile, content, Finding.encode)
+    }
+
+    public static insertCSS() {
+        //location
+        const location = Finding.cssFile
+
+        //query style configuration
+        const config = vscode.workspace.getConfiguration('fuwafuwa')
+        const opacity = config.opacity
+        const style = config.style
+
+        //add start & remove background
+        const content = fs.readFileSync(location, Finding.encode) + `
+/*start-fuwafuwa-start*/
+
+.lines-content.monaco-editor-background {
+    background: none
+}
+
+[id="workbench.parts.editor"] .split-view-view .editor-container .editor-instance>.monaco-editor .overflow-guard>.monaco-scrollable-element::before {
+    content: ""; pointer-events: none; position: ${style.position};
+    top: ${style.top}; right: ${style.right}; bottom: ${style.bottom}; left: ${style.left};
+    width: ${style.width}; height: ${style.height}; opacity: ${opacity};
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: var(--update-image, url("${URL.pathToFileURL(Finding.activeImage(0))}?fuwafuwa=\${fuwafuwa.count}"));
+    ${style.custom}
+}
+
+/*end-fuwafuwa-end*/
+`
+        fs.writeFileSync(Finding.cssFile, content, Finding.encode)
+    }
+
+    public static insertJavaScript() {
+        //location
+        const location = Finding.scriptFile
+
+        //query style configuration
+        const config = vscode.workspace.getConfiguration('fuwafuwa')
+        const interval = config.interval * 1000
+
+        //add start & remove update function
+        let content = fs.readFileSync(location, Finding.encode) + `
+//start-fuwafuwa-start
+
+var fuwafuwa = { count: 0, update: null, interval: null}
+fuwafuwa.update = () => {
+    //update count
+    fuwafuwa.count = fuwafuwa.count + 1
+    //update image
+    document.querySelectorAll(\`[id="workbench.parts.editor"] .split-view-view .editor-container .editor-instance>.monaco-editor .overflow-guard>.monaco-scrollable-element\`).forEach((element, idx) => {
+        element.style.setProperty('--update-image', \`url("${URL.pathToFileURL(Finding.activeDirectory)}/\${idx}.png?fuwafuwa=\${fuwafuwa.count}")\`);
+    })
+}
+fuwafuwa.interval = setInterval(fuwafuwa.update, ${interval})
+
+//end-fuwafuwa-end
+`
+        fs.writeFileSync(location, content, Finding.encode)
     }
 
     public static checksum() {

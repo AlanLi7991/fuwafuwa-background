@@ -10,6 +10,7 @@ add_library(
     FuwafuwaAddon SHARED
     ${TARGET_HEADERS}
     ${TARGET_SOURCES}
+    ${CMAKE_JS_SRC}
 )
 
 add_dependencies(

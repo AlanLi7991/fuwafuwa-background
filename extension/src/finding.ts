@@ -10,8 +10,7 @@ export default class Finding {
 
 
     public static get cssFile(): string {
-        const name = parseFloat(vscode.version) >= 1.38 ? "workbench.desktop.main.css" : "workbench.main.css"
-        return path.join(this.root, "vs", "workbench", name)
+        return path.join(this.root, "vs", "workbench", "workbench.desktop.main.css")
     }
 
     public static get scriptFile(): string {
@@ -20,6 +19,10 @@ export default class Finding {
 
     public static get productFile(): string {
         return path.join(this.root, "..", "product.json")
+    }
+
+    public static get libraryFile(): string {
+        return path.join(this.extension, "media", "active", "FuwafuwaAddon.node")
     }
 
     public static get backupDirectory(): string {
@@ -35,10 +38,6 @@ export default class Finding {
     }
 
     public static get activeDirectory(): string {
-        return path.join(this.extension, "media", "active")
-    }
-
-    public static get updateImage(): string {
         return path.join(this.extension, "media", "active")
     }
 

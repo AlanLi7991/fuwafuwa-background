@@ -2,7 +2,8 @@ out
 node_modules
 .vscode-test/
 *.vsix
-emsdk
+extension/media/active
 processor/build
+processor/opencv
 backup
 token.txt

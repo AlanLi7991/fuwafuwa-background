@@ -2,8 +2,13 @@
 #include "processor.h"
 
 int main() {
-    auto input = "image/ZERO-R_6028.jpg";
-    auto output = "cache/ZERO-R_6028.jpg";
+    std::string input, output;
+    std::cin >> input;
+    output = input;
+    auto i = output.rfind('.', output.length());
+    if (i != std::string::npos) {
+        output.replace(i + 1, 3, "png");
+    }
     auto ret = fuwafuwa::core::segmentWhiteImage(input, output);
     return ret;
 }

@@ -6,9 +6,9 @@ import Setup from "./setup"
 
 export default class Command {
 
-    public static reinstall(): vscode.Disposable {
-        return vscode.commands.registerCommand("fuwafuwa.reinstall", () => {
-            Setup.reinstall()
+    public static install(): vscode.Disposable {
+        return vscode.commands.registerCommand("fuwafuwa.install", () => {
+            Setup.install()
         })
     }
 
@@ -44,8 +44,8 @@ export default class Command {
                             const cachePath = await this.selectPath(true)
                             config.update("cache", cachePath, vscode.ConfigurationTarget.Global)
                             break
-                        case Setting.Type.Install:
-                            Setup.install()
+                        case Setting.Type.Library:
+                            Setup.library()
                             break
                         case Setting.Type.Uninstall:
                             Setup.uninstall()

@@ -8,7 +8,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	Finding.extension = context.extensionPath
 	
-	context.subscriptions.push(Command.reinstall());
+	context.subscriptions.push(Command.install());
 	context.subscriptions.push(Command.configure());
 	context.subscriptions.push(Background.register())
 }

@@ -2,9 +2,11 @@
 
 This is an editor background extension can bring unlimited sisters company with you code.
 
-This work referred three other extensions:
-
 这是一个可以让十万个不同小姐姐作为背景图出现在你代码编辑器中的插件。
+
+![](https://github.com/AlanLi7991/fuwafuwa-background/blob/master/resource/gif/sample.gif?raw=true)
+
+This work referred three other extensions:
 
 这项工作参考了以下几个库的源代码:
 
@@ -16,27 +18,15 @@ I am very appreciated those works build by pioneer
 
 我十分感谢这些先驱者的代码
 
-## Problems
-
-> I will resolve soon 会马上解决
-
-**"Custom Random Mode" need OpenCV dynamic lib in system right now**
-
-**目前“自定义随机模式”需要系统中存在OpenCV动态库**
-
-## Will Do
-
-1. Build extension processor with static OpenCV library
-2. Update segment algorithm robust by some paper
-
-1. 使用静态库的OpenCV重新编译插件
-2. 查找一些论文来升级分割算法效果
-
 ## Features
 
 This extension provides 4 mode of background
 
 本插件一共提供了四种模式
+
+> Custom mode need download and load library manually, library file and sample images can be obtained from git repository "resource"
+
+> 自定义模式需要手动下载库文件并加载, 库文件和测试用的素材可以通过 Git 仓库的 "resource" 路径获取
 
 | Mode    | Feature    | 特点 |
 | :------------ | :------------ | :------------ |
@@ -45,27 +35,12 @@ This extension provides 4 mode of background
 | Custom Random 自定义随机模式 | use images from folder configuration and random loop | 使用一个文件夹作为数据库，并随机选取图片作为背景图 |
 | Custom Stable 自定义固定模式 | use fixed image from configuration as background | 使用一张固定的图片作为背景图 |
 
-![](https://github.com/AlanLi7991/fuwafuwa-background/blob/master/extension/media/sample.gif?raw=true)
-
-Above is a illustration of "Default Random" mode
-
-以上是 “默认循环模式” 的展示效果
-
-![](https://github.com/AlanLi7991/fuwafuwa-background/blob/master/extension/media/custom.gif?raw=true)
-
-Above is a illustration of "Custom Random" mode， result segments white background in automatic
-
-以上是 “自定义循环模式” 的展示效果，开启了自动分割白色背景
-
-Resource for test can be obtained from git repository "resource/folder"
-
-测试用的素材可以通过 Git Repository 的 "resource/folder" 路径获取
 
 ## Requirements
 
-**"Install" "Uninstall" "Reinstall" Commands in this extension maybe need administrator authority**
+**"Install" "Uninstall" Commands in this extension maybe need administrator authority**
 
-**本插件的 “启用” “停用” “重装” 命令可能需要管理员权限，不同平台的情况如下**
+**本插件的 “启用” “停用” 命令可能需要管理员权限，不同平台的情况如下**
 
 "/tmp" can be any directory
 
@@ -79,9 +54,9 @@ Resource for test can be obtained from git repository "resource/folder"
 
 ## Extension Settings
 
-Settings need reinstall fuwafuwa
+Settings need redo install command
 
-需要 “重装” 指令的配置选项
+需要再次执行 “启用” 指令的配置选项
 
 | Settings    |  Function   |  作用   |
 | :------------ | :------------ | :------------ |
@@ -101,6 +76,7 @@ Settings can change during using
 | fuwafuwa.image    | depict the custom stable background image   | 设定自定义固定模式的背景图 |
 | fuwafuwa.folder   | depict the custom random background image data source | 设定自定义随机模式的图片文件夹 |
 | fuwafuwa.cache    | depict the custom random background processed image location | 设定自定义随机模式的缓存文件夹，用于储存图片处理结果 |
+| fuwafuwa.library  | depict load the library file downloaded from git repository | 加载从Git仓库下载的库文件 |
 
 ## Discussion
 
@@ -120,18 +96,22 @@ All images are collected form internet， if you own the copy right. please cont
 
 ## Release Notes
 
-### 1.0.0
+### 1.0.4
 
-Initial release of alpha version
+update library from dynamic to static
 
-### 1.0.1
+### 1.0.3
 
-Update clean logic
+Add image shift animation & error message detail
 
 ### 1.0.2
 
 Fix warning information logic at first install
 
-## 1.0.3
+### 1.0.1
 
-Add image shift animation & error message detail
+Update clean logic
+
+### 1.0.0
+
+Initial release of alpha version

@@ -18,7 +18,7 @@ export default class Background {
             const interval = event.affectsConfiguration("fuwafuwa.interval")
             const opacity = event.affectsConfiguration("fuwafuwa.opacity")
             if (interval || style || opacity) {
-                vscode.window.showInformationMessage("ふわふわ重装后生效 Fuwafuwa need reinstall to activate")
+                vscode.window.showInformationMessage("ふわふわ需重新启用 Fuwafuwa need reinstall to activate")
                 return
             }
             const random = event.affectsConfiguration("fuwafuwa.random")
@@ -27,9 +27,12 @@ export default class Background {
             }
 
             const folder = event.affectsConfiguration("fuwafuwa.folder")
-            const cache = event.affectsConfiguration("fuwafuwa.cache")
-            if (folder || cache) {
-                CustomRandom.readyCheck()
+            const image = event.affectsConfiguration("fuwafuwa.image")
+            if (folder || image) {
+                const cache = vscode.workspace.getConfiguration('fuwafuwa').cache as string
+                if (cache.length == 0) {
+                    vscode.window.showWarningMessage(`自定义模式需要配置缓存文件夹(Custom mode need cache settings)`)
+                }
             }
 
             background.reload()
@@ -99,23 +102,27 @@ export default class Background {
     private fallbackRandom(): boolean {
         const folder = vscode.workspace.getConfiguration('fuwafuwa').folder as string
         const cache = vscode.workspace.getConfiguration('fuwafuwa').cache as string
-        const directory = [folder, cache]
-        // check configurations
-        for (let i = 0; i < directory.length; i++) {
-            const element = directory[i];
-            //1. default configuration use fallback
-            if (!element || element.length === 0) {
-                return true
-            }
-            //2. wrong configuration use fallback too
-            if (!fs.existsSync(element)) {
-                vscode.window.showWarningMessage(`${element} 文件夹路径不存在(folder configuration is not exist)`)
-                return true
-            }
-            if (!fs.statSync(element).isDirectory()) {
-                vscode.window.showWarningMessage(`${element} 路径不是文件夹(configuration is not directory)`)
-                return true
-            }
+
+        //1. default configuration use fallback
+        if (!folder || folder.length === 0) {
+            return true
+        }
+        //2. wrong configuration use fallback too
+        if (!fs.existsSync(folder)) {
+            vscode.window.showWarningMessage(`${folder} 文件夹路径不存在(folder configuration is not exist)`)
+            return true
+        }
+        if (!fs.statSync(folder).isDirectory()) {
+            vscode.window.showWarningMessage(`${folder} 文件夹路径不是目录(folder configuration is not directory)`)
+            return true
+        }
+        if (!fs.existsSync(cache)) {
+            vscode.window.showWarningMessage(`${cache} 缓存路径不存在(cache configuration is not exist)`)
+            return true
+        }
+        if (!fs.statSync(cache).isDirectory()) {
+            vscode.window.showWarningMessage(`${cache} 缓存路径不是文件夹(cache configuration is not directory)`)
+            return true
         }
         // all check valid 
         return false
@@ -123,6 +130,7 @@ export default class Background {
 
     private fallbackStable(): boolean {
         const image = vscode.workspace.getConfiguration('fuwafuwa').image as string
+        const cache = vscode.workspace.getConfiguration('fuwafuwa').cache as string
 
         //1. default configuration use fallback
         if (!image || image.length === 0) {
@@ -139,6 +147,14 @@ export default class Background {
         }
         if (!Image.validExtension(image)) {
             vscode.window.showWarningMessage(`${image}图片格式仅支持PNG、JPG(image extension supports PNG & JPG only)`)
+            return true
+        }
+        if (!fs.existsSync(cache)) {
+            vscode.window.showWarningMessage(`${cache} 缓存路径不存在(cache configuration is not exist)`)
+            return true
+        }
+        if (!fs.statSync(cache).isDirectory()) {
+            vscode.window.showWarningMessage(`${cache} 缓存路径不是文件夹(cache configuration is not directory)`)
             return true
         }
         // all check valid 
