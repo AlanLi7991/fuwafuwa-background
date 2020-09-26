@@ -7,8 +7,8 @@ import Setup from "./setup"
 export default class Command {
 
     public static install(): vscode.Disposable {
-        return vscode.commands.registerCommand("fuwafuwa.install", () => {
-            Setup.install()
+        return vscode.commands.registerCommand("fuwafuwa.activate", () => {
+            Setup.activate()
         })
     }
 
@@ -47,8 +47,8 @@ export default class Command {
                         case Setting.Type.Library:
                             Setup.library()
                             break
-                        case Setting.Type.Uninstall:
-                            Setup.uninstall()
+                        case Setting.Type.Deactivate:
+                            Setup.deactivate()
                             break
                     }
                 }

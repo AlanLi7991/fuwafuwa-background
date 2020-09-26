@@ -28,8 +28,8 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "fuwafuwa.install",
-				"title": "Fuwafuwa: 启用ふわふわ / Install"
+				"command": "fuwafuwa.activate",
+				"title": "Fuwafuwa: 启用ふわふわ / Activate"
 			},
 			{
 				"command": "fuwafuwa.configure",

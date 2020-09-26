@@ -1,12 +1,11 @@
 import * as fs from "fs"
 import * as vscode from "vscode"
-import * as crypto from "crypto"
 import Finding from "./finding"
 import Modifier from "./modifier"
 
 export default class Setup {
 
-    public static install() {
+    public static activate() {
         //check authorized
         if (!Modifier.authorized()) {
             return
@@ -29,6 +28,8 @@ export default class Setup {
             Modifier.insertJavaScript()
             //checksum
             Modifier.checksum()
+            //show
+            vscode.workspace.getConfiguration('fuwafuwa').update("hidden", false, vscode.ConfigurationTarget.Global)
             vscode.window.showInformationMessage("ふわふわ启用完毕(重新加载后生效) Fuwafuwa installed, reload window to work")
         } catch (error) {
             vscode.window.showErrorMessage(`ふわふわ启用失败(Fuwafuwa install failed)`)
@@ -52,7 +53,7 @@ export default class Setup {
         vscode.window.showInformationMessage("ふわふわ库文件已加载 Fuwafuwa library loaded")
     }
 
-    public static uninstall() {
+    public static deactivate() {
         //check authorized
         if (!Modifier.authorized()) {
             return
@@ -71,9 +72,9 @@ export default class Setup {
                 Modifier.repair()
                 Modifier.checksum()
             }
-            vscode.window.showInformationMessage("ふわふわ已卸载(重新加载后生效) Fuwafuwa uninstalled, reload window to refresh")
+            vscode.window.showInformationMessage("ふわふわ已卸载(重新加载后生效) Fuwafuwa deactivated, reload window to refresh")
         } catch (error) {
-            vscode.window.showErrorMessage(`ふわふわ卸载失败(Fuwafuwa uninstall failed)`)
+            vscode.window.showErrorMessage(`ふわふわ卸载失败(Fuwafuwa deactivate failed)`)
         }
     }
 

@@ -38,7 +38,7 @@ This extension provides 4 mode of background
 
 ## Requirements
 
-**"Install" "Uninstall" Commands in this extension maybe need administrator authority**
+**"Activate" "Deactivate" Commands in this extension maybe need administrator authority**
 
 **本插件的 “启用” “停用” 命令可能需要管理员权限，不同平台的情况如下**
 

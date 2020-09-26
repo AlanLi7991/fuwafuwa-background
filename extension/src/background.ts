@@ -5,15 +5,22 @@ import { InnerRandom, InnerStable } from "./inner"
 import { CustomRandom, CustomStable } from "./custom"
 import Image from "./image"
 import Finding from "./finding"
+import Modifier from "./modifier"
+import Setup from "./setup"
 
 export default class Background {
 
     public static register(): vscode.Disposable {
+        // init
         const background = new Background();
         background.reload()
+
+        // return disposable
         return vscode.workspace.onDidChangeConfiguration((event) => {
+            // stop first
             background.stop()
 
+            // if change style/interval/opacity show information
             const style = event.affectsConfiguration("fuwafuwa.style")
             const interval = event.affectsConfiguration("fuwafuwa.interval")
             const opacity = event.affectsConfiguration("fuwafuwa.opacity")
@@ -21,11 +28,14 @@ export default class Background {
                 vscode.window.showInformationMessage("ふわふわ需重新启用 Fuwafuwa need reinstall to activate")
                 return
             }
+
+            // if change random, then cleaning 
             const random = event.affectsConfiguration("fuwafuwa.random")
             if (random) {
                 Manager.clean()
             }
 
+            // if change path of folder/image, then check cache
             const folder = event.affectsConfiguration("fuwafuwa.folder")
             const image = event.affectsConfiguration("fuwafuwa.image")
             if (folder || image) {
@@ -51,6 +61,17 @@ export default class Background {
         const hidden = vscode.workspace.getConfiguration('fuwafuwa').hidden ?? true
         if (hidden) {
             return
+        }
+
+        // check working
+        if (!Modifier.modified()) {
+            vscode.window.showInformationMessage("ふわふわ当前未启用 Fuwafuwa need activate", "启用 Activate", "隐藏 Hidden").then(selection => {
+                if (selection == "启用 Activate") {
+                    Setup.activate()
+                } else {
+                    vscode.workspace.getConfiguration('fuwafuwa').update("hidden", true, vscode.ConfigurationTarget.Global)
+                }
+            })
         }
 
         //start

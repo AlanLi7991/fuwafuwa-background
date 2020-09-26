@@ -2,7 +2,7 @@ import * as vscode from "vscode"
 
 export namespace Setting {
 
-    export enum Type { Hidden, Random, Segment, Image, Folder, Cache, Library, Uninstall }
+    export enum Type { Hidden, Random, Segment, Image, Folder, Cache, Library, Deactivate }
 
     export class Item implements vscode.QuickPickItem {
 
@@ -17,9 +17,9 @@ export namespace Setting {
             const folder = new Item("$(file-directory)  目录 Folder", "配置随机图片目录 (Configure random image folder)", Type.Folder)
             const cache = new Item("$(database)  缓存 Cache", "配置缓存图片目录 (Configure cache image folder)", Type.Cache)
             const library = new Item("$(rocket)  库 Library", "加载ふわふわ库文件 (Load ふわふわ library)", Type.Library)
-            const uninstall = new Item("$(stop)  停用 Uninstall", "停用ふわふわ (Uninstall ふわふわ)", Type.Uninstall)
+            const deactivate = new Item("$(stop)  停用 Deactivate", "停用ふわふわ (Deactivate ふわふわ)", Type.Deactivate)
 
-            return [hidden, random, segment, image, folder, cache, library, uninstall]
+            return [hidden, random, segment, image, folder, cache, library, deactivate]
 
         }
     }
