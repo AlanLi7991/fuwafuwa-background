@@ -11,14 +11,21 @@ import Setup from "./setup"
 export default class Background {
 
     public static register(): vscode.Disposable {
-        // init
-        const background = new Background();
-        background.reload()
+        // check working
+        if (!Modifier.modified()) {
+            vscode.window.showInformationMessage("ふわふわ当前未启用 Fuwafuwa need activate", "启用 Activate", "隐藏 Hidden").then(selection => {
+                if (selection == "启用 Activate") {
+                    Setup.activate()
+                }
+            })
+        } else {
+            Background.start()
+        }
 
         // return disposable
         return vscode.workspace.onDidChangeConfiguration((event) => {
             // stop first
-            background.stop()
+            Background.stop()
 
             // if change style/interval/opacity show information
             const style = event.affectsConfiguration("fuwafuwa.style")
@@ -27,12 +34,6 @@ export default class Background {
             if (interval || style || opacity) {
                 vscode.window.showInformationMessage("ふわふわ需重新启用 Fuwafuwa need reinstall to activate")
                 return
-            }
-
-            // if change random, then cleaning 
-            const random = event.affectsConfiguration("fuwafuwa.random")
-            if (random) {
-                Manager.clean()
             }
 
             // if change path of folder/image, then check cache
@@ -45,17 +46,16 @@ export default class Background {
                 }
             }
 
-            background.reload()
+            Background.start()
         });
     }
 
-    private manager?: Manager
-    private interval?: NodeJS.Timeout
+    private static manager?: Manager
+    private static interval?: NodeJS.Timeout
 
-
-    private reload() {
+    public static start() {
         //stop
-        this.stop()
+        Background.stop()
 
         // check hidden
         const hidden = vscode.workspace.getConfiguration('fuwafuwa').hidden ?? true
@@ -63,56 +63,47 @@ export default class Background {
             return
         }
 
-        // check working
-        if (!Modifier.modified()) {
-            vscode.window.showInformationMessage("ふわふわ当前未启用 Fuwafuwa need activate", "启用 Activate", "隐藏 Hidden").then(selection => {
-                if (selection == "启用 Activate") {
-                    Setup.activate()
-                } else {
-                    vscode.workspace.getConfiguration('fuwafuwa').update("hidden", true, vscode.ConfigurationTarget.Global)
-                }
-            })
-        }
-
-        //start
-        this.start()
+        //reload
+        Background.reload()
     }
 
-    private stop() {
+    public static stop() {
         //invalid first
-        clearInterval(this.interval!)
-        this.manager = undefined
-        this.interval = undefined
+        clearInterval(Background.interval!)
+        Background.manager = undefined
+        Background.interval = undefined
+        //clean
+        if (fs.existsSync(Finding.runtimeImage)) {
+            fs.unlinkSync(Finding.runtimeImage)
+        }
     }
 
-    private start() {
+    private static reload() {
         // check use random or stable
         const random = vscode.workspace.getConfiguration('fuwafuwa').random ?? true
         if (random) {
             // create manager by fallback flag
-            const fallback = this.fallbackRandom()
-            this.manager = fallback ? new InnerRandom() : new CustomRandom()
+            const fallback = Background.fallbackRandom()
+            Background.manager = fallback ? new InnerRandom() : new CustomRandom()
         } else {
             // create manager by fallback flag
-            const fallback = this.fallbackStable()
-            this.manager = fallback ? new InnerStable() : new CustomStable()
+            const fallback = Background.fallbackStable()
+            Background.manager = fallback ? new InnerStable() : new CustomStable()
         }
 
         //load data
         try {
-            if (!fs.existsSync(Finding.activeDirectory)) {
-                fs.mkdirSync(Finding.activeDirectory, { recursive: true })
-            }
-            this.manager?.load()
-            this.manager?.shift()
+
+            Background.manager?.load()
+            Background.manager?.shift()
         } catch (error) {
             vscode.window.showWarningMessage(`${error.message}`)
         }
 
         //init interval
-        this.interval = setInterval(() => {
+        Background.interval = setInterval(() => {
             try {
-                this.manager?.shift()
+                Background.manager?.shift()
             } catch (error) {
                 vscode.window.showWarningMessage(`${error.message}`)
             }
@@ -120,7 +111,7 @@ export default class Background {
     }
 
 
-    private fallbackRandom(): boolean {
+    private static fallbackRandom(): boolean {
         const folder = vscode.workspace.getConfiguration('fuwafuwa').folder as string
         const cache = vscode.workspace.getConfiguration('fuwafuwa').cache as string
 
@@ -149,7 +140,7 @@ export default class Background {
         return false
     }
 
-    private fallbackStable(): boolean {
+    private static fallbackStable(): boolean {
         const image = vscode.workspace.getConfiguration('fuwafuwa').image as string
         const cache = vscode.workspace.getConfiguration('fuwafuwa').cache as string
 

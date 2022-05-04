@@ -8,3 +8,5 @@ processor/build
 processor/opencv
 backup
 token.txt
+
+.DS_Store

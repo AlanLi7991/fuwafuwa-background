@@ -9,63 +9,28 @@ import Manager from "./manager";
 export class CustomRandom extends Manager {
 
     private skip_once = false
-    private frozen = false
     private hash = "empty"
     private names: string[] = []
     private sequence: Image[] = []
 
-    load(): void {
+    public load(): void {
         this.fillNames()
         this.fillSequence()
     }
 
-    shift(): void {
+    public shift(): void {
         if (this.skip_once) {
             vscode.window.showInformationMessage("ふわふわ数据读准备中 Fuwafuwa data preparing")
             this.skip_once = false
             return
         }
-        const directory = Finding.activeDirectory
-        //query
-        const activities = fs.readdirSync(directory).sort()
-        const temp = Finding.activeImage(activities.length)
-        //delete
-        const first = activities.shift()
-        //has image 
-        if (first) {
-            //loop / remove activities
-            if (this.sequence.length == 0) {
-                fs.renameSync(path.join(directory, first), temp)
-                activities.push(path.basename(temp))
-            } else {
-                fs.unlinkSync(path.join(directory, first))
-            }
-        }
+
         //rename active images
-        for (let i = 0; i < activities.length; i++) {
-            const element = activities[i]
-            fs.renameSync(path.join(directory, element), Finding.activeImage(i))
+        const first = this.sequence.shift()
+        if (first) {
+            fs.copyFileSync(first.cacheImage, Finding.runtimeImage)
         }
-        //slice sequence
-        const append = Math.min(Finding.capacity - activities.length, this.sequence.length)
-        const candidates = this.sequence.splice(0, append)
-        //push sequence to active
-        for (let i = 0; i < candidates.length; i++) {
-            const element = candidates[i]
-            fs.copyFileSync(element.cacheImage, Finding.activeImage(activities.length + i))
-        }
-        //check enough name
-        const empty = this.names.length == 0
-        const lack = (activities.length + candidates.length) < Finding.capacity
-        if (empty) {
-            //if not frozen, frozen it
-            if (lack && !this.frozen) {
-                this.frozen = true
-                vscode.window.showWarningMessage(`随机图片有效数不足，请添加更多图片或关闭切图 Random images aren't enough, need prepare more or disable segment`)
-            }
-            //fill names again, query if images changed
-            this.fillNames()
-        }
+
         //fill sequence for next loop
         this.fillSequence()
     }
@@ -79,6 +44,7 @@ export class CustomRandom extends Manager {
         }
         const empty = this.names.length == 0
         if (empty) {
+            this.fillNames()
             return
         }
         //take next one
@@ -109,13 +75,6 @@ export class CustomRandom extends Manager {
             //files change
             if (this.hash !== md5) {
                 this.hash = md5
-                this.frozen = false
-            }
-            //for 2 situation
-            //  1. not frozen, fill up names again for random
-            //  2. frozen, activities plus sequence not enough for capacity, stop random, begin loop exist
-            //  3. 
-            if (!this.frozen) {
                 this.names = results.sort(() => Math.random() - 0.5)
             }
         }
@@ -140,10 +99,8 @@ export class CustomStable extends Manager {
         const background = vscode.workspace.getConfiguration('fuwafuwa').image
         const image = new Image(background, false)
         image.generateCache().then((success) => {
-            for (let i = 0; i < Finding.capacity; i++) {
-                const source = success ? image.cacheImage : background
-                fs.copyFileSync(source, Finding.activeImage(i))
-            }
+            const source = success ? image.cacheImage : background
+            fs.copyFileSync(source, Finding.runtimeImage)
         })
 
     }

@@ -11,7 +11,7 @@ export namespace Setting {
         public static list(): Item[] {
 
             const hidden = new Item("$(color-mode)  隐藏 Hidden", "隐藏ふわふわ (Hide ふわふわ)", Type.Hidden)
-            const random = new Item("$(sync)  随机 Random", "显示固定图片 (Use radom image)", Type.Random)
+            const random = new Item("$(sync)  随机 Random", "显示随机图片 (Use radom image)", Type.Random)
             const segment = new Item("$(symbol-misc)  切图 Segment", "自动切图 (Auto segment)", Type.Segment)
             const image = new Item("$(file-media)  图片 Image", "配置固定背景图 (Configure stable background image)", Type.Image)
             const folder = new Item("$(file-directory)  目录 Folder", "配置随机图片目录 (Configure random image folder)", Type.Folder)

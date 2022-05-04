@@ -30,7 +30,7 @@ export default class Setup {
             Modifier.checksum()
             //show
             vscode.workspace.getConfiguration('fuwafuwa').update("hidden", false, vscode.ConfigurationTarget.Global)
-            vscode.window.showInformationMessage("ふわふわ启用完毕(重新加载后生效) Fuwafuwa installed, reload window to work")
+            vscode.window.showInformationMessage("ふわふわ启用完毕(CMD+Q重启VSCode后生效) Fuwafuwa installed, CMD+Q restart vscode")
         } catch (error) {
             vscode.window.showErrorMessage(`ふわふわ启用失败(Fuwafuwa install failed)`)
         }
@@ -72,7 +72,7 @@ export default class Setup {
                 Modifier.repair()
                 Modifier.checksum()
             }
-            vscode.window.showInformationMessage("ふわふわ已卸载(重新加载后生效) Fuwafuwa deactivated, reload window to refresh")
+            vscode.window.showInformationMessage("ふわふわ已卸载(CMD+Q重启VSCode后生效) Fuwafuwa deactivated, CMD+Q restart vscode")
         } catch (error) {
             vscode.window.showErrorMessage(`ふわふわ卸载失败(Fuwafuwa deactivate failed)`)
         }

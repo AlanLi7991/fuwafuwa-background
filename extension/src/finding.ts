@@ -4,11 +4,14 @@ import * as vscode from "vscode"
 
 export default class Finding {
     public static root = path.dirname(require.main!.filename)
-    public static extension = "/tmp"
+    public static extension = "/extension"
     public static encode = "utf-8"
     public static capacity = 5
 
 
+    /**
+     * VSCode official file
+     */
     public static get cssFile(): string {
         return path.join(this.root, "vs", "workbench", "workbench.desktop.main.css")
     }
@@ -21,8 +24,11 @@ export default class Finding {
         return path.join(this.root, "..", "product.json")
     }
 
+    /**
+     * Resource file
+     */
     public static get libraryFile(): string {
-        return path.join(this.extension, "media", "FuwafuwaAddon.node")
+        return path.join(this.extension, "addon", "FuwafuwaAddon.node")
     }
 
     public static get backupDirectory(): string {
@@ -37,12 +43,12 @@ export default class Finding {
         return path.join(this.extension, "media", "stable", "default.png")
     }
 
-    public static get activeDirectory(): string {
-        return path.join(this.extension, "media", "active")
+    /**
+     * Runtime file
+     */
+    public static get runtimeImage(): string {
+        return path.join(this.root, "vs", "workbench", "fuwafuwa.png")
     }
 
-    public static activeImage(i: number): string {
-        return path.join(this.extension, "media", "active", `${i}.png`)
-    }
 }
 

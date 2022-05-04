@@ -2,6 +2,7 @@ import * as vscode from "vscode"
 import * as fs from "fs"
 import Setting from "./setting"
 import Setup from "./setup"
+import Background from "./background"
 
 
 export default class Command {
@@ -9,6 +10,7 @@ export default class Command {
     public static install(): vscode.Disposable {
         return vscode.commands.registerCommand("fuwafuwa.activate", () => {
             Setup.activate()
+            Background.start()
         })
     }
 
@@ -48,6 +50,7 @@ export default class Command {
                             Setup.library()
                             break
                         case Setting.Type.Deactivate:
+                            Background.stop()
                             Setup.deactivate()
                             break
                     }

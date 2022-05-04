@@ -2,7 +2,6 @@ import * as fs from "fs"
 import * as path from "path"
 import * as vscode from "vscode"
 import * as crypto from "crypto"
-import * as URL from "url"
 import Finding from "./finding"
 
 
@@ -63,10 +62,18 @@ export default class Modifier {
             fs.renameSync(backup, location)
         }
 
+        //runtime
+        if (fs.existsSync(Finding.runtimeImage)) {
+            fs.unlinkSync(Finding.runtimeImage)
+        }
         return true
     }
 
     public static repair() {
+
+        if (fs.existsSync(Finding.runtimeImage)) {
+            fs.unlinkSync(Finding.runtimeImage)
+        }
         let content = fs.readFileSync(Finding.scriptFile, Finding.encode)
         content = content.replace(/\/\/start-fuwafuwa-start[\s\S]*?\/\/end-fuwafuwa-end/g, "")
         content = content.replace(/\s*$/, "\n")
@@ -102,7 +109,7 @@ export default class Modifier {
     width: ${style.width}; height: ${style.height}; opacity: ${opacity};
     background-size: contain;
     background-repeat: no-repeat;
-    background-image: var(--update-image, url("${URL.pathToFileURL(Finding.activeImage(0))}?fuwafuwa=\${fuwafuwa.count}"));
+    background-image: var(--update-image, url("fuwafuwa.png?fuwafuwa=-1"));
     ${style.custom}
 }
 
@@ -128,8 +135,8 @@ fuwafuwa.update = () => {
     //update count
     fuwafuwa.count = fuwafuwa.count + 1
     //update image
-    document.querySelectorAll(\`[id="workbench.parts.editor"] .split-view-view .editor-container .editor-instance>.monaco-editor .overflow-guard>.monaco-scrollable-element\`).forEach((element, idx) => {
-        element.style.setProperty('--update-image', \`url("${URL.pathToFileURL(Finding.activeDirectory)}/\${idx}.png?fuwafuwa=\${fuwafuwa.count}")\`);
+    document.querySelectorAll(\`[id="workbench.parts.editor"] .split-view-view .editor-container .editor-instance\`).forEach((element, idx) => {
+        element.style.setProperty('--update-image', \`url("fuwafuwa.png?fuwafuwa=\${fuwafuwa.count-idx}")\`)
     })
 }
 fuwafuwa.interval = setInterval(fuwafuwa.update, ${interval})
