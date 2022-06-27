@@ -2,10 +2,10 @@ out
 node_modules
 .vscode-test/
 *.vsix
-extension/media/FuwafuwaAddon.node
-extension/media/active
+extension/resource/FuwafuwaAddon.node
 processor/build
 processor/opencv
+processor/build_opencv
 backup
 token.txt
 

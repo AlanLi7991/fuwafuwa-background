@@ -1,74 +1,54 @@
 import * as vscode from "vscode"
-import * as fs from "fs"
-import Setting from "./setting"
-import Setup from "./setup"
-import Background from "./background"
+import Modifier from "./modifier"
 
 
+enum Type { Single = "Single", Random = "Random", Custom = "Custom" }
+
+class Configure implements vscode.QuickPickItem {
+    constructor(public label: string, public description: string, public type: Type) { }
+}
 export default class Command {
 
-    public static install(): vscode.Disposable {
-        return vscode.commands.registerCommand("fuwafuwa.activate", () => {
-            Setup.activate()
-            Background.start()
+    constructor(public context: vscode.ExtensionContext) { }
+
+    public toggle() {
+        //check authorized
+        if (!Modifier.authorized()) {
+            return
+        }
+        try {
+            //check modified
+            if (Modifier.modified()) {
+                //not modified restore try repair
+                Modifier.repair()
+                Modifier.checksum()
+                vscode.window.showInformationMessage("重启VSCode后ふわふわ还原(CMD+Q) Fuwafuwa repaired, CMD+Q restart vscode")
+            } else {
+                //insert
+                Modifier.insertCSS()
+                Modifier.insertJavaScript()
+                //checksum
+                Modifier.checksum()
+                vscode.window.showInformationMessage("重启VSCode后ふわふわ生效(CMD+Q) Fuwafuwa injected, CMD+Q restart vscode")
+            }
+            //show
+        } catch (error) {
+            vscode.window.showErrorMessage(`ふわふわ切换失败(Fuwafuwa switch failed)`)
+        }
+    }
+
+    public configure() {
+        const single = new Configure("$(file-media)  图片 Single", "配置固定背景图 (Configure stable background image)", Type.Single)
+        const random = new Configure("$(sync)  随机 Random", "显示随机图片 (Use radom image)", Type.Random)
+        const custom = new Configure("$(rocket)  自定义 Custom", "加载ふわふわ库文件 (Load ふわふわ library)", Type.Custom)
+        const quickPick = vscode.window.createQuickPick()
+        quickPick.items = [single, random, custom]
+        quickPick.show()
+        quickPick.onDidChangeSelection(async () => {
+            const select = quickPick.selectedItems[0] as Configure
+            vscode.workspace.getConfiguration('fuwafuwa').update("mode", select.type, vscode.ConfigurationTarget.Global)
+            quickPick.dispose()
         })
     }
 
-    public static configure(): vscode.Disposable {
-        return vscode.commands.registerCommand("fuwafuwa.configure", () => {
-
-            const quickPick = vscode.window.createQuickPick()
-            quickPick.items = Setting.Item.list()
-            quickPick.show()
-            quickPick.onDidChangeSelection(async () => {
-                const select = quickPick.selectedItems[0] as Setting.Item
-                const config = vscode.workspace.getConfiguration('fuwafuwa');
-                if (select) {
-                    switch (select.type) {
-                        case Setting.Type.Hidden:
-                            config.update("hidden", !config.hidden, vscode.ConfigurationTarget.Global)
-                            break
-                        case Setting.Type.Random:
-                            config.update("random", !config.random, vscode.ConfigurationTarget.Global)
-                            break
-                        case Setting.Type.Segment:
-                            config.update("segment", !config.segment, vscode.ConfigurationTarget.Global)
-                            break
-                        case Setting.Type.Image:
-                            const imagePath = await this.selectPath(false)
-                            config.update("image", imagePath, vscode.ConfigurationTarget.Global)
-                            break
-                        case Setting.Type.Folder:
-                            const folderPath = await this.selectPath(true)
-                            config.update("folder", folderPath, vscode.ConfigurationTarget.Global)
-                            break
-                        case Setting.Type.Cache:
-                            const cachePath = await this.selectPath(true)
-                            config.update("cache", cachePath, vscode.ConfigurationTarget.Global)
-                            break
-                        case Setting.Type.Library:
-                            Setup.library()
-                            break
-                        case Setting.Type.Deactivate:
-                            Background.stop()
-                            Setup.deactivate()
-                            break
-                    }
-                }
-                quickPick.dispose()
-            })
-        })
-    }
-
-    private static async selectPath(folder: boolean): Promise<fs.PathLike> {
-        const dir = await vscode.window.showOpenDialog({
-            canSelectFolders: folder,
-            canSelectFiles: !folder,
-            canSelectMany: false,
-            openLabel: folder ? "Select Folder" : "Select Image",
-            filters: { "Images": ["png", "jpg", "jpeg"] }
-        });
-
-        return dir?.shift()?.fsPath ?? ""
-    }
 }

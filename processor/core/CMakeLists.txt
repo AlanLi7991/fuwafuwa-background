@@ -13,7 +13,7 @@ add_library(
 # Find OpenCV
 find_package (
     OpenCV REQUIRED 
-    PATHS ${CMAKE_SOURCE_DIR}/opencv
+    PATHS ${CMAKE_SOURCE_DIR}/build_opencv
     NO_DEFAULT_PATH
 )
 

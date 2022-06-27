@@ -11,7 +11,7 @@
             ],
             "defines": [],
             "macFrameworkPath": [
-                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks"
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/System/Library/Frameworks"
             ],
             "compilerPath": "/usr/bin/clang",
             "cStandard": "c11",

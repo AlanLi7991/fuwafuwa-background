@@ -17,7 +17,6 @@
                 "${workspaceFolder}/extension/out/**/*.js"
             ],
             "preLaunchTask": "${defaultBuildTask}",
-            "stopOnEntry": false,
         },
         {
             "name": "CPP: Fuwafuwa",
