@@ -22,14 +22,14 @@ export default class Command {
                 //not modified restore try repair
                 Modifier.repair()
                 Modifier.checksum()
-                vscode.window.showInformationMessage("重启VSCode后ふわふわ还原(CMD+Q) Fuwafuwa repaired, CMD+Q restart vscode")
+                vscode.window.showInformationMessage("重启VSCode后还原 VSCode repaired need reopen")
             } else {
                 //insert
                 Modifier.insertCSS()
                 Modifier.insertJavaScript()
                 //checksum
                 Modifier.checksum()
-                vscode.window.showInformationMessage("重启VSCode后ふわふわ生效(CMD+Q) Fuwafuwa injected, CMD+Q restart vscode")
+                vscode.window.showInformationMessage("重启VSCode后ふわふわ生效 Fuwafuwa injected need reopen vscode")
             }
             //show
         } catch (error) {

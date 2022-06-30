@@ -10,9 +10,7 @@ export default class Engine {
     constructor(public context: vscode.ExtensionContext) { }
 
     public update(event: vscode.ConfigurationChangeEvent) {
-        // stop first
-        this.stop()
-
+        
         // if change style/interval/opacity show information
         const style = event.affectsConfiguration("fuwafuwa.style")
         const interval = event.affectsConfiguration("fuwafuwa.interval")
@@ -20,8 +18,14 @@ export default class Engine {
             vscode.window.showInformationMessage("ふわふわ需重新启用 Fuwafuwa need toggle again")
             return
         }
-        
-        this.start()
+
+        const mode = event.affectsConfiguration("fuwafuwa.mode") 
+        if (mode) {
+            // stop first
+            this.stop()
+            // start again
+            this.start()
+        }
     }
 
     public async start() {

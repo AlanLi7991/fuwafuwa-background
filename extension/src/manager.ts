@@ -42,7 +42,7 @@ namespace Manager {
                     openLabel: "Select Fuwafuwa Image",
                     filters: { "Images": ["png", "jpg", "jpeg"] }
                 });
-                image = selected?.shift()?.path ?? ""
+                image = selected?.shift()?.fsPath ?? ""
             }
 
             if (image.length > 0) {
@@ -98,7 +98,8 @@ namespace Manager {
 
             await vscode.window.withProgress({
                 location: vscode.ProgressLocation.Notification,
-                title: "下载Fuwafuwa库文件 Download Util FuwafuwaAddon.node"
+                title: "下载Fuwafuwa库文件 Download Util FuwafuwaAddon.node",
+                cancellable: true
             }, async (progress, token)=> {
                 
                 const downloading = (downloadedBytes: number, totalBytes: number | undefined) => {
@@ -112,8 +113,11 @@ namespace Manager {
                     vscode.Uri.parse(`https://github.com/AlanLi7991/fuwafuwa-background/raw/master/resource/addon/${process.platform}/FuwafuwaAddon.node`),
                     "FuwafuwaAddon.node",
                     this.context,
-                    undefined,
-                    downloading
+                    token,
+                    downloading, {
+                        timeoutInMs: 1000*60*10, //10mins
+                        retries: 1000 
+                    }
                 )
             })
 
@@ -135,7 +139,7 @@ namespace Manager {
                     canSelectMany: false,
                     openLabel: "Select Folder"
                 })
-                folder = selected?.shift()?.path ?? ""
+                folder = selected?.shift()?.fsPath ?? ""
             }
 
             if (folder.length === 0) {
