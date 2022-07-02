@@ -39,7 +39,7 @@ export default class Processor {
                 resolve(dest)
             } else {
                 resolve(image)
-                console.log(image + " not white image")
+                console.log(image + " could not be processed")
             }
         }
         return new Promise<string>(executor)

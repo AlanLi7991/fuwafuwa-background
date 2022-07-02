@@ -4,8 +4,8 @@ import Modifier from "./modifier"
 
 export default class Engine {
 
-    private manager?: Manager.Image
-    private interval?: NodeJS.Timeout
+    private manager: Manager.Image | undefined
+    private interval: NodeJS.Timeout | undefined
 
     constructor(public context: vscode.ExtensionContext) { }
 
@@ -30,12 +30,16 @@ export default class Engine {
 
     public async start() {
 
+        if (vscode.workspace.getConfiguration("fuwafuwa").mode === "") {
+            return
+        }
+
         this.manager = Manager.instance(this.context)
 
         //load data
         try {
-            await this.manager?.load()
-            await this.manager?.shift()
+            await this.manager.load()
+            await this.manager.shift()
         } catch (error) {
             if (error instanceof Error) {
                 vscode.window.showWarningMessage(`${error.message}`)

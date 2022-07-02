@@ -13,10 +13,34 @@ namespace Manager {
         if (mode === "Single") {
             return new Single(context)
         }
-        if (mode === "Custom") {
+        if (mode === "Fuwafuwa") {
             return new Custom(context)
         }
         return new Random(context)
+    }
+
+    export async function selectImage() {
+        const selected = await vscode.window.showOpenDialog({
+            openLabel: "Select Fuwafuwa Image",
+            filters: { "Images": ["png", "jpg", "jpeg"] }
+        });
+        let image = selected?.shift()?.fsPath ?? ""
+        if (image.length > 0) {
+            vscode.workspace.getConfiguration('fuwafuwa').update("image", image, vscode.ConfigurationTarget.Global)
+        }
+    }
+
+    export async function selectFolder() {
+        const selected = await vscode.window.showOpenDialog({
+            canSelectFolders: true,
+            canSelectFiles: false,
+            canSelectMany: false,
+            openLabel: "Select Folder"
+        })
+        let folder = selected?.shift()?.fsPath ?? ""
+        if (folder.length > 0) {
+            vscode.workspace.getConfiguration('fuwafuwa').update("folder", folder, vscode.ConfigurationTarget.Global)
+        }
     }
 
     export class Image {
@@ -35,19 +59,8 @@ namespace Manager {
     export class Single extends Image {
         public async load(): Promise<void> {
             let image = vscode.workspace.getConfiguration('fuwafuwa').image as string
-
             //1. default configuration use fallback
             if (!fs.existsSync(image) || !fs.statSync(image).isFile() || !Image.validExtension(image)) {
-                const selected = await vscode.window.showOpenDialog({
-                    openLabel: "Select Fuwafuwa Image",
-                    filters: { "Images": ["png", "jpg", "jpeg"] }
-                });
-                image = selected?.shift()?.fsPath ?? ""
-            }
-
-            if (image.length > 0) {
-                vscode.workspace.getConfiguration('fuwafuwa').update("image", image, vscode.ConfigurationTarget.Global)
-            } else {
                 image = path.join(this.context.extensionPath, "resource", "default.png")
             }
             fs.copyFileSync(image, Modifier.runtimeImage)
@@ -65,7 +78,7 @@ namespace Manager {
             }
             //query
             this.images = fs.readdirSync(folder).filter((s) => {
-                return Image.validExtension(s)
+                return Image.validExtension(s) && !s.startsWith("fuwafuwa_")
             }).sort(() => Math.random() - 0.5).map(file => path.join(folder, file))
         }
 
@@ -133,21 +146,8 @@ namespace Manager {
             let folder = vscode.workspace.getConfiguration('fuwafuwa').folder as string
             //default configuration use fallback
             if (!fs.existsSync(folder) || !fs.statSync(folder).isDirectory()) {
-                const selected = await vscode.window.showOpenDialog({
-                    canSelectFolders: true,
-                    canSelectFiles: false,
-                    canSelectMany: false,
-                    openLabel: "Select Folder"
-                })
-                folder = selected?.shift()?.fsPath ?? ""
-            }
-
-            if (folder.length === 0) {
                 return
-            } else {
-                vscode.workspace.getConfiguration('fuwafuwa').update("folder", folder, vscode.ConfigurationTarget.Global)
             }
-
             const prepared = await this.prepare()
 
             if (prepared && this.processor == undefined) {
@@ -167,7 +167,7 @@ namespace Manager {
             if (file === undefined || !fs.existsSync(file)) {
                 return
             }
-            console.log(`Custom shift ${file}`)
+
             const processed = await this.processor?.generateCache(file) || file
             if (fs.existsSync(processed)) {
                 fs.copyFileSync(processed, Modifier.runtimeImage)
