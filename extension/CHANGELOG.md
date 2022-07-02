@@ -8,6 +8,14 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Update segment algorithm
 
+## [1.1.0] - 2022-07-01
+
+### Changed
+- Fix the extension and simplify interactive command
+
+### Added
+- Update support for M1
+
 ## [1.0.4] - 2020-06-14
 ### Changed
 - Change algorithm library to static

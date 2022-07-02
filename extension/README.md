@@ -20,27 +20,22 @@ I am very appreciated those works build by pioneer
 
 ## Features
 
-This extension provides 4 mode of background
+This extension provides 3 mode of background
 
-本插件一共提供了四种模式
-
-> Custom mode need download and load library manually, library file and sample images can be obtained from git repository "resource"
-
-> 自定义模式需要手动下载库文件并加载, 库文件和测试用的素材可以通过 Git 仓库的 "resource" 路径获取
+本插件一共提供了三种模式
 
 | Mode    | Feature    | 特点 |
 | :------------ | :------------ | :------------ |
-| Default Random 默认循环模式 | use five inner images as background and loop | 使用内置的固定图片作为背景图并且循环展示 |
-| Default Stable 默认固定模式 | use fixed inner image as background | 使用内置的固定图片作为背景图 |
-| Custom Random 自定义随机模式 | use images from folder configuration and random loop | 使用一个文件夹作为数据库，并随机选取图片作为背景图 |
-| Custom Stable 自定义固定模式 | use fixed image from configuration as background | 使用一张固定的图片作为背景图 |
+| Image 静态图片模式 | use fix image as background image | 使用固定的背景图片 |
+| Random 随机图片模式 | use random images from folder or default as loop background | 使用文件夹中随机循环的背景图片 |
+| Fuwafuwa 软萌萌模式 | use fuwafuwa images from folder as loop background | 使用文件夹中的图片作为数据源，进行处理后作为的背景图片 |
 
 
 ## Requirements
 
-**"Activate" "Deactivate" Commands in this extension maybe need administrator authority**
+**"toggle" Commands in this extension maybe need administrator authority**
 
-**本插件的 “启用” “停用” 命令可能需要管理员权限，不同平台的情况如下**
+**本插件的 "注入 & 还原" 命令可能需要管理员权限，不同平台的情况如下**
 
 "/tmp" can be any directory
 
@@ -50,33 +45,17 @@ This extension provides 4 mode of background
 | :------------ | :------------ | :------------ |
 | Windows   | run with the administrator authority | 以管理员身份运行 |
 | MacOS     | cd /tmp && sudo code .  | cd /tmp && sudo code .    |
-| Linux     | cd /tmp && sudo code .  | cd /tmp && sudo code .    |
 
 ## Extension Settings
 
-Settings need redo install command
+Settings need redo "toggle" command
 
-需要再次执行 “启用” 指令的配置选项
+需要再次执行 “注入&还原” 指令的配置选项
 
 | Settings    |  Function   |  作用   |
 | :------------ | :------------ | :------------ |
 | fuwafuwa.interval | control the random loop interval | 控制随机循环的时间间隔 |
 | fuwafuwa.style    | control the background css style | 控制背景图片展示的CSS样式 |
-| fuwafuwa.opacity  | control the background image css opacity | 控制背景图片展示的CSS透明度 |
-
-Settings can change during using
-
-可以在使用中修改的配置选项
-
-| Settings    |  Function   |  作用   |
-| :------------ | :------------ | :------------ |
-| fuwafuwa.hidden   | hide the fuwafuwa background image          | 隐藏背景图片的显示 |
-| fuwafuwa.segment  | switch the segment process of image         | 开启或关闭自动切割白色背景功能 |
-| fuwafuwa.random   | switch between stable mode and random mode  | 切换随机模式或固定模式    |
-| fuwafuwa.image    | depict the custom stable background image   | 设定自定义固定模式的背景图 |
-| fuwafuwa.folder   | depict the custom random background image data source | 设定自定义随机模式的图片文件夹 |
-| fuwafuwa.cache    | depict the custom random background processed image location | 设定自定义随机模式的缓存文件夹，用于储存图片处理结果 |
-| fuwafuwa.library  | depict load the library file downloaded from git repository | 加载从Git仓库下载的库文件 |
 
 ## Discussion
 
@@ -115,3 +94,8 @@ Update clean logic
 ### 1.0.0
 
 Initial release of alpha version
+
+### 1.1.0
+
+Fix the extension and simplify interactive command
+Update support for M1
