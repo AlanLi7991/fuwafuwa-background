@@ -143,17 +143,18 @@ namespace Manager {
         }
 
         public async load(): Promise<void> {
-            let folder = vscode.workspace.getConfiguration('fuwafuwa').folder as string
-            //default configuration use fallback
-            if (!fs.existsSync(folder) || !fs.statSync(folder).isDirectory()) {
-                return
-            }
             const prepared = await this.prepare()
 
             if (prepared && this.processor == undefined) {
                 this.processor = new Processor(this.addon)
             }
 
+            let folder = vscode.workspace.getConfiguration('fuwafuwa').folder as string
+            //default configuration use fallback
+            if (!fs.existsSync(folder) || !fs.statSync(folder).isDirectory()) {
+                folder = path.join(this.context.extensionPath, "resource", "random")
+                this.processor = undefined
+            }
             //query
             this.sources = fs.readdirSync(folder).filter((s) => {
                 return Image.validExtension(s) && !s.startsWith("fuwafuwa_")
