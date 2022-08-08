@@ -8,6 +8,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Update segment algorithm
 
+## [1.1.1] - 2022-08-08
+
+### Fixed
+- Fix the 1.70 workbench.js path
+
 ## [1.1.0] - 2022-07-01
 
 ### Changed

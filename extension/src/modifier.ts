@@ -18,7 +18,13 @@ export default class Modifier {
     }
 
     static get scriptFile(): string {
-        return path.join(this.root, "vs", "code", "electron-browser", "workbench", "workbench.js")
+        const v140 = path.join(this.root, "vs", "code", "electron-browser", "workbench", "workbench.js")
+        const v170 = path.join(this.root, "vs", "code", "electron-sandbox", "workbench", "workbench.js")
+        if (fs.existsSync(v170)) {
+            return v170
+        } else {
+            return v140
+        }
     }
 
     static get productFile(): string {
