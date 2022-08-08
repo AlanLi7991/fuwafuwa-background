@@ -34,7 +34,9 @@ export default class Command {
             }
             //show
         } catch (error) {
-            vscode.window.showErrorMessage(`ふわふわ切换失败(Fuwafuwa switch failed)`)
+            if (error instanceof Error) {
+                vscode.window.showWarningMessage(`${error.message}`)
+            }
         }
     }
 
