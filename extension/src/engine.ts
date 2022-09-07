@@ -6,6 +6,7 @@ export default class Engine {
 
     private manager: Manager.Image | undefined
     private interval: NodeJS.Timeout | undefined
+    private skip: boolean = false
 
     constructor(public context: vscode.ExtensionContext) { }
 
@@ -25,6 +26,13 @@ export default class Engine {
             this.stop()
             // start again
             this.start()
+        }
+    }
+
+    public pause(event: vscode.WindowState) {
+        this.skip = event.focused == false
+        if (this.skip == false) {
+            this.manager?.shift()
         }
     }
 
@@ -48,6 +56,11 @@ export default class Engine {
 
         //init interval
         this.interval = setInterval(async () => {
+
+            if (this.skip) {
+                return
+            }
+
             try {
                 await this.manager?.shift()
             } catch (error) {
@@ -55,6 +68,7 @@ export default class Engine {
                     vscode.window.showWarningMessage(`${error.message}`)
                 }
             }
+
         }, (vscode.workspace.getConfiguration('fuwafuwa').interval ?? 10) * 900)
     }
 

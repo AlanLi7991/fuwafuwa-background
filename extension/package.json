@@ -42,12 +42,28 @@
 				"fuwafuwa.mode": {
 					"type": "string",
 					"default": "Random",
-					"description": "显示模式 / show mode"
+					"enum": ["Single", "Random", "Fuwafuwa", "Online"],
+					"enumDescriptions": [
+						"Single", "显示模式 / show mode", "Fuwafuwa", "Online"
+					]
 				},
 				"fuwafuwa.image": {
 					"type": "string",
 					"default": "",
 					"description": "固定背景图片路径 / fix background image path"
+				},
+				"fuwafuwa.source": {
+					"type": "string",
+					"default": "Pixiv",
+					"enum": ["Pixiv", "Bing", "MovieDB", "Unsplash"],
+					"enumDescriptions": [
+						"Pixiv", "Bing", "MovieDB", "Unsplash"
+					]
+				},
+				"fuwafuwa.query": {
+					"type": "string",
+					"default": "blonde",
+					"description": ""
 				},
 				"fuwafuwa.folder": {
 					"type": "string",
@@ -130,18 +146,20 @@
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^7.0.2",
 		"@types/node": "^13.11.0",
+		"@types/node-fetch": "^2.6.2",
 		"@types/vscode": "^1.40.0",
 		"@typescript-eslint/eslint-plugin": "^2.26.0",
 		"@typescript-eslint/parser": "^2.26.0",
+		"@vscode/test-electron": "^1.3.0",
 		"eslint": "^6.8.0",
 		"glob": "^7.1.6",
 		"mocha": "^7.1.1",
-		"typescript": "^3.8.3",
-		"vscode-test": "^1.3.0"
+		"typescript": "^3.8.3"
 	},
 	"dependencies": {
 		"@microsoft/vscode-file-downloader-api": "^1.0.1",
-		"node-addon-api": "^3.0.0"
+		"node-addon-api": "^3.0.0",
+		"node-fetch": "^2.6.7"
 	},
 	"extensionDependencies": [
 		"mindaro-dev.file-downloader"
