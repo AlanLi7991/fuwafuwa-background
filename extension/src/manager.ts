@@ -2,8 +2,11 @@ import * as vscode from "vscode"
 import * as fs from "fs"
 import * as path from "path"
 import Modifier from "./modifier"
-import { getApi, FileDownloader } from "@microsoft/vscode-file-downloader-api";
 import Processor from "./processor"
+import Source from "./source"
+import fetch from "node-fetch"
+import { pipeline } from 'stream'
+import { promisify } from 'util'
 
 namespace Manager {
 
@@ -15,6 +18,9 @@ namespace Manager {
         }
         if (mode === "Fuwafuwa") {
             return new Custom(context)
+        }
+        if (mode === "Online") {
+            return new Online(context)
         }
         return new Random(context)
     }
@@ -56,7 +62,7 @@ namespace Manager {
         public async shift(): Promise<void> { }
     }
 
-    export class Single extends Image {
+    class Single extends Image {
         public async load(): Promise<void> {
             let image = vscode.workspace.getConfiguration('fuwafuwa').image as string
             //1. default configuration use fallback
@@ -90,70 +96,22 @@ namespace Manager {
             }
         }
     }
-    export class Custom extends Image {
+    class Custom extends Image {
 
-        private processor: Processor | undefined = undefined
-        private addon: string = path.join(this.context.extensionPath, "resource", "FuwafuwaAddon.node")
+        private fallback = false
+        private processor = new Processor(this.context)
         private sources: string[] = []
 
-        private async prepare(): Promise<boolean> {
-
-            if (process.platform !== "darwin" && process.platform !== "win32") {
-                vscode.window.showWarningMessage(`自动切图暂不支持当前操作系统 Segment not support current system`)
-                return false
-            }
-
-            if (fs.existsSync(this.addon)) {
-                return true
-            }
-
-            let file: vscode.Uri | undefined
-
-            await vscode.window.withProgress({
-                location: vscode.ProgressLocation.Notification,
-                title: "下载Fuwafuwa库文件 Download Util FuwafuwaAddon.node",
-                cancellable: true
-            }, async (progress, token)=> {
-                
-                const downloading = (downloadedBytes: number, totalBytes: number | undefined) => {
-                    progress.report({
-                        message: `Downloaded ${downloadedBytes}/${totalBytes} bytes`,
-                    })
-                }
-
-                const fileDownloader: FileDownloader = await getApi()
-                file = await fileDownloader.downloadFile(
-                    vscode.Uri.parse(`https://github.com/AlanLi7991/fuwafuwa-background/raw/master/resource/addon/${process.platform}/FuwafuwaAddon.node`),
-                    "FuwafuwaAddon.node",
-                    this.context,
-                    token,
-                    downloading, {
-                        timeoutInMs: 1000*60*10, //10mins
-                        retries: 1000 
-                    }
-                )
-            })
-
-            if (file != undefined && fs.existsSync(file.fsPath)) {
-                fs.copyFileSync(file.fsPath, this.addon)
-                vscode.window.showInformationMessage("ふわふわ库文件已加载 Fuwafuwa library loaded")
-                return true
-            }
-            return false
-        }
-
         public async load(): Promise<void> {
-            const prepared = await this.prepare()
-
-            if (prepared && this.processor == undefined) {
-                this.processor = new Processor(this.addon)
+            if (this.processor.ready == false) {
+                await this.processor.prepare()
             }
-
+            
             let folder = vscode.workspace.getConfiguration('fuwafuwa').folder as string
             //default configuration use fallback
             if (!fs.existsSync(folder) || !fs.statSync(folder).isDirectory()) {
                 folder = path.join(this.context.extensionPath, "resource", "random")
-                this.processor = undefined
+                this.fallback = true
             }
             //query
             this.sources = fs.readdirSync(folder).filter((s) => {
@@ -168,8 +126,10 @@ namespace Manager {
             if (file === undefined || !fs.existsSync(file)) {
                 return
             }
-
-            const processed = await this.processor?.generateCache(file) || file
+            let processed = file
+            if (this.fallback == false) {
+                processed = await this.processor.native_fuwafuwa(file)
+            }
             if (fs.existsSync(processed)) {
                 fs.copyFileSync(processed, Modifier.runtimeImage)
             }
@@ -177,6 +137,71 @@ namespace Manager {
         }
 
     }
+
+    class Online extends Image {
+
+        private folder = vscode.workspace.getConfiguration('fuwafuwa').folder as string
+        private source = vscode.workspace.getConfiguration('fuwafuwa').source as string
+        private queue = promisify(pipeline)
+        private entries: Source.Entry[] = []
+        private handler: Source.Handler | undefined = undefined
+        private processor = new Processor(this.context)
+
+        constructor(context: vscode.ExtensionContext) { 
+            super(context)
+        }
+
+        public async load(): Promise<void> {
+            if (this.processor.ready == false) {
+                await this.processor.prepare()
+            }
+            this.handler = Source.instance()
+            this.entries = await this.handler.request()
+        }
+
+        public async shift(): Promise<void> { 
+
+            if (this.handler == undefined) {
+                return
+            }
+
+            const entry = this.entries.shift()
+
+            if (this.entries.length == 0) {
+                this.load()
+            }
+
+            if (entry === undefined) {
+                return
+            }
+
+            try {
+                const response = await fetch(entry.url)
+                if (response.ok == false) {
+                    throw new Error(`${response.url} \n HTTP Error Response: ${response.status} ${response.statusText}`)
+                }
+                await this.queue(response.body, fs.createWriteStream(Modifier.runtimeImage))
+                
+                let download = path.join(this.folder, this.source)
+
+                if (["MovieDB", "Unsplash"].includes(this.source)) {
+                    download = path.join(download, entry.folder)
+                }
+                if (fs.existsSync(download) == false || fs.statSync(download).isDirectory() == false) {
+                    fs.mkdirSync(download, { recursive: true })
+                }
+                const file = path.join(download, entry.name)
+                fs.copyFileSync(Modifier.runtimeImage, file)
+
+            } catch (error) {
+                if (error instanceof Error) {
+                    vscode.window.showWarningMessage(`${error.message}`)
+                }
+            }
+           
+        }
+    }
+
 
 }
 
