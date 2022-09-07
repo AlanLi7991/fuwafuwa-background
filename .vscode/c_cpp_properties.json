@@ -5,9 +5,9 @@
             "includePath": [
                 "${workspaceFolder}/processor/core/**",
                 "${workspaceFolder}/processor/addon/**",
+                "${HOME}/.cmake-js/electron-arm64/v7.2.4/include/node",
+                "${workspaceFolder}/processor/node_modules/node-addon-api",
                 "/usr/local/Cellar/opencv/4.1.1_1/include/opencv4",
-                "${HOME}/.cmake-js/node-x64/v12.16.3/include/node",
-                "${workspaceFolder}/processor/node_modules/node-addon-api"
             ],
             "defines": [],
             "macFrameworkPath": [
