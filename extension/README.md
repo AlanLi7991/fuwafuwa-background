@@ -99,3 +99,11 @@ Initial release of alpha version
 
 Fix the extension and simplify interactive command
 Update support for M1
+
+### 1.1.1
+
+Fix the 1.70 workbench.js path
+
+### 1.1.3
+
+Add online mode

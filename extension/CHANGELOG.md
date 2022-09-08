@@ -8,6 +8,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Update segment algorithm
 
+## [1.1.3] - 2022-08-08
+
+### Added
+- Added online mode
+
 ## [1.1.1] - 2022-08-08
 
 ### Fixed
