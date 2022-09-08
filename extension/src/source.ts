@@ -99,9 +99,9 @@ namespace Source {
 
         private search = async (resolve: any, reject: any) => {
             
+            const index = this.page + 1
+            const search = new URL(`${this.host}${Host.movieDB.search}`)
             try {
-                const index = this.page + 1
-                const search = new URL(`${this.host}${Host.movieDB.search}`)
                 search.search = new URLSearchParams({
                     "api_key": Access.MovieDB,
                     "page": index.toString(),
@@ -129,21 +129,20 @@ namespace Source {
                 this.page += 1
 
             } catch (error) {
-                reject(error)
+                reject(new Error(`HTTP Error ${search.host}${search.pathname}`))
             } 
         }
 
         private backdrops = async (resolve: any, reject: any) => {
+            if (this.ids.length == 0 || this.names.length == 0) {
+                reject(new Error("MovieDB response error"))
+                return
+            }
 
+            const name = this.names.shift()!
+            const path = Host.movieDB.images.replace("{movie_id}", this.ids.shift()!)
+            const images = new URL(`${this.host}${path}`)
             try {
-                if (this.ids.length == 0 || this.names.length == 0) {
-                    reject(new Error("MovieDB response error"))
-                    return
-                }
-
-                const name = this.names.shift()!
-                const path = Host.movieDB.images.replace("{movie_id}", this.ids.shift()!)
-                const images = new URL(`${this.host}${path}`)
                 images.search = new URLSearchParams({
                     "api_key": Access.MovieDB
                 }).toString()
@@ -166,7 +165,7 @@ namespace Source {
                 results.sort(() => Math.random() - 0.5)
                 resolve(results)
             } catch (error) {
-                reject(error)
+                reject(new Error(`HTTP Error ${images.host}${images.pathname}`))
             } 
         }
 
@@ -210,7 +209,7 @@ namespace Source {
                 })
                 resolve(result)
             } catch (error) {
-                reject(error)
+                reject(new Error(`HTTP Error ${this.host}`))
             }            
         }
 

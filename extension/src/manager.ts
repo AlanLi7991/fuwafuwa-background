@@ -178,7 +178,7 @@ namespace Manager {
             try {
                 const response = await fetch(entry.url)
                 if (response.ok == false) {
-                    throw new Error(`${response.url} \n HTTP Error Response: ${response.status} ${response.statusText}`)
+                    throw new Error(`HTTP Error Response: ${response.status} ${response.statusText}`)
                 }
                 await this.queue(response.body, fs.createWriteStream(Modifier.runtimeImage))
                 
@@ -191,8 +191,9 @@ namespace Manager {
                     fs.mkdirSync(download, { recursive: true })
                 }
                 const file = path.join(download, entry.name)
-                fs.copyFileSync(Modifier.runtimeImage, file)
-
+                if (fs.existsSync(Modifier.runtimeImage) && !fs.existsSync(file)) {
+                    fs.copyFileSync(Modifier.runtimeImage, file)
+                }
             } catch (error) {
                 if (error instanceof Error) {
                     vscode.window.showWarningMessage(`${error.message}`)
