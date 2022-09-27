@@ -37,14 +37,14 @@ This extension provides 3 mode of background
 
 **本插件的 "注入 & 还原" 命令可能需要管理员权限，不同平台的情况如下**
 
-"/tmp" can be any directory
+MacOS should confirm vscode locate in "/Applications"
 
-"/tmp" 可以是任意文件夹
+MacOS 平台下需要确保vscode位于应用程序目录下 "/Applications"
 
 | Operator System    | How to install   | 如何获得权限   |
 | :------------ | :------------ | :------------ |
 | Windows   | run with the administrator authority | 以管理员身份运行 |
-| MacOS     | cd /tmp && sudo code .  | cd /tmp && sudo code .    |
+| MacOS     | sudo chown -R $(whoami) "/Applications/Visual Studio Code.app"  | sudo chown -R $(whoami) "/Applications/Visual Studio Code.app"  |
 
 ## Extension Settings
 
@@ -107,3 +107,7 @@ Fix the 1.70 workbench.js path
 ### 1.1.3
 
 Add online mode
+
+### 1.1.4
+
+Fix source issue

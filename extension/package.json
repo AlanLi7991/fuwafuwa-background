@@ -2,7 +2,7 @@
 	"name": "fuwafuwa-background",
 	"displayName": "ふわふわ(Fuwafuwa) Background",
 	"description": "fuwafuwa-background is an editor background extension with image process. Fuwafuwa can segment font object with white background",
-	"version": "1.1.3",
+	"version": "1.1.4",
 	"publisher": "AlanLi7991",
 	"author": "AlanLi7991",
 	"repository": {
@@ -42,6 +42,7 @@
 				"fuwafuwa.mode": {
 					"type": "string",
 					"default": "Random",
+					"description": "背景显示模式 / background show mode",
 					"enum": [
 						"Single",
 						"Random",
@@ -49,10 +50,10 @@
 						"Online"
 					],
 					"enumDescriptions": [
-						"Single",
-						"显示模式 / show mode",
-						"Fuwafuwa",
-						"Online"
+						"单张图片 / single",
+						"随机图片 / show mode",
+						"软绵绵处理 / fuwafuwa",
+						"在线图源 / online"
 					]
 				},
 				"fuwafuwa.image": {
@@ -63,6 +64,7 @@
 				"fuwafuwa.source": {
 					"type": "string",
 					"default": "Pixiv",
+					"description": "在线图源 / online source",
 					"enum": [
 						"Pixiv",
 						"Bing",
@@ -70,16 +72,16 @@
 						"Unsplash"
 					],
 					"enumDescriptions": [
-						"Pixiv",
-						"Bing",
-						"MovieDB",
-						"Unsplash"
+						"Pixiv 第三方图源",
+						"Bing 第三方图源",
+						"MovieDB 官方图源",
+						"Unsplash 官方图源"
 					]
 				},
 				"fuwafuwa.query": {
 					"type": "string",
 					"default": "blonde",
-					"description": ""
+					"description": "在线图源关键词 / query word for online mode"
 				},
 				"fuwafuwa.folder": {
 					"type": "string",

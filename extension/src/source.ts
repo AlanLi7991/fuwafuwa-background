@@ -16,9 +16,8 @@ namespace Source {
             images: "/movie/{movie_id}/images"
         },
         likepoems: {
-            mc: "https://api.likepoems.com/img/mc",
-            bing: "https://api.likepoems.com/img/bing",
-            pixiv: "https://api.likepoems.com/img/pixiv?type=json"
+            bing: "https://api.likepoems.com/img/sina/bing?type=json",
+            pixiv: "https://api.likepoems.com/img/sina/pixiv?type=json"
         }
     }
 
@@ -86,7 +85,26 @@ namespace Source {
     class Bing extends Handler {
         constructor() {
             super(Host.likepoems.bing, "Bing")
-        }  
+        }
+        
+        private location = async (resolve: any, reject: any) => {
+            const url = new URL(this.host)
+            try {
+                const response = await fetch(url)
+                const data = await response.json()
+                const location = data["url"]
+                const name = location.substring(location.lastIndexOf('/')+1);
+                const result = new Entry(new URL(location), name)
+                resolve([result])
+            } catch (error) {
+                reject(error)
+            }            
+        }
+
+        request(): Promise<Entry[]> {
+            return new Promise(this.location)
+        }
+
     }
 
     class MovieDB extends Handler {
@@ -202,7 +220,7 @@ namespace Source {
                 }
                 const result = data.map((obj: any, idx: number)=> {
                     const url = new URL(obj.links.download)
-                    const name = `${obj.id}.png`
+                    const name = `${obj.user.name}'s Photo.${obj.id}.png`
                     const entry = new Entry(url, name)
                     entry.folder = this.name
                     return entry

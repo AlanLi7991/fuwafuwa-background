@@ -8,6 +8,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Update segment algorithm
 
+## [1.1.4] - 2022-09-27
+
+### Fixed
+- Fix source issue
+
 ## [1.1.3] - 2022-08-08
 
 ### Added
